@@ -38,6 +38,11 @@ abstract class AbstractMigration
     protected $indexes;
 
     /**
+     * @var array
+     */
+    protected static $extendColumn = [];
+
+    /**
      * @return string
      */
     abstract protected function getMigrationStub(): string ;
@@ -141,4 +146,16 @@ abstract class AbstractMigration
         return str_replace($this->replacedString(), $this->getReplaceContent(), $this->getMigrateStubContent());
     }
 
+    /**
+     * register new column type parse
+     *
+     * @param $columns
+     * @return bool
+     */
+    public function setExtendColumn(array $columns): bool
+    {
+        static::$extendColumn = array_merge(static::$extendColumn, $columns);
+
+        return true;
+    }
 }

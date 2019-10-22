@@ -2,7 +2,6 @@
 
 namespace JaguarJack\MigrateGenerator\Migration;
 
-use Doctrine\DBAL\Schema\Column;
 use JaguarJack\MigrateGenerator\Exceptions\UnSupportedFrameException;
 
 trait MigrationTrait
@@ -17,6 +16,7 @@ trait MigrationTrait
      */
     protected function parseColumn()
     {
+        dd(static::$extendColumn);
         $className = $this->getTypeClassName();
 
         $migrationColumnClass = $this->getExtendColumn($className);
@@ -59,10 +59,10 @@ trait MigrationTrait
      * @param $className
      * @return bool
      */
-    protected function getExtendColumn($className)
+    protected function getExtendColumn($className): bool
     {
-        if (isset($this->extendColumn[$className])) {
-            return $this->getExtendColumn[$className];
+        if (isset(static::$extendColumn[$className])) {
+            return static::$extendColumn[$className];
         }
 
         return false;

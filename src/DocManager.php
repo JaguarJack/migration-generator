@@ -200,7 +200,6 @@ class DocManager
      */
     protected function registerNewType(): void
     {
-        dd(static::$types);
         foreach (static::$types as $dbType => $class) {
             DoctrineType::addType($dbType, $class);
         }
@@ -216,7 +215,7 @@ class DocManager
      */
     protected function registerDoctrineTypeMapping(): void
     {
-        foreach ($this->types as $dbType => $class) {
+        foreach (static::$types as $dbType => $class) {
             $this->getDatabasePlatform()->registerDoctrineTypeMapping($dbType, $dbType);
         }
     }

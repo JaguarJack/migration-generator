@@ -63,7 +63,17 @@ class MigrateGenerator
      */
     public function getMigrationContent($table)
     {
-        return MigrationFactory::create($this->frame)->setTable($table)->output();
+        return $this->getMigrationCreator()->setTable($table)->output();
+    }
+
+    /**
+     * get migration creator
+     *
+     * @return mixed
+     */
+    protected function getMigrationCreator()
+    {
+        return MigrationFactory::create($this->frame);
     }
 
     /**
@@ -92,7 +102,7 @@ class MigrateGenerator
     }
 
     /**
-     * 注册新类型
+     * register new type
      *
      * @param array $types
      * @return bool
@@ -100,5 +110,16 @@ class MigrateGenerator
     public function registerNewType(array $types): bool
     {
         return DocManager::addTypes($types);
+    }
+
+    /**
+     * register new column parse
+     *
+     * @param array $columns
+     * @return mixed
+     */
+    public function registerNewTypeParse(array $columns)
+    {
+        return $this->getMigrationCreator()->setExtendColumn($columns);
     }
 }

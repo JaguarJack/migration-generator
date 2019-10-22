@@ -22,10 +22,18 @@ class ThinkPHPCommand extends Command
 
     protected function execute(Input $input, Output $output)
     {
-        $migrateGenerator = new MigrateGenerator('laravel');
+        $migrateGenerator = new MigrateGenerator('thinkphp');
 
-        $migrateGenerator->registerNewType([
+        /**$migrateGenerator->registerNewType([
             'uuid' => 'uuid',
+        ]);**/
+
+        $migrateGenerator->registerNewColumnType([
+            'uuid' => 'uuid',
+            'uuids' => 'uuid',
+
+            'uuidd' => 'uuid',
+            'uuidad' => 'uuid',
         ]);
 
         $migrateGenerator->generate($this->app->getRootPath() . '/databases/migrations/');

@@ -122,7 +122,7 @@ abstract class AbstractType
      * @param $options
      * @return string
      */
-    protected function getThinkphpField($type, $options)
+    protected function getThinkphpField($type, $options): string
     {
         return sprintf("('%s', '%s', %s)", $this->column->getName(), $type, $options);
     }
@@ -133,7 +133,7 @@ abstract class AbstractType
      * @param $method
      * @return string
      */
-    protected function getLaravelField($method)
+    protected function getLaravelField($method): string
     {
         return sprintf("%s('%s')%s", $method, $this->column->getName(), $this->laravelOptions());
     }
@@ -143,7 +143,7 @@ abstract class AbstractType
      *
      * @return string
      */
-    protected function laravelOptions()
+    protected function laravelOptions(): string
     {
         $options = '';
 
@@ -160,8 +160,8 @@ abstract class AbstractType
             $options .= '->nullable()';
         }
 
-        $options .= "->comment('{$this->column->getComment()}')";
+        $options .= "->comment('{$this->column->getComment()}');";
 
-        return $options . ';';
+        return $options;
     }
 }
