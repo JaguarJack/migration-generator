@@ -1,0 +1,16 @@
+{
+    "name": "jaguarjack/migrate-generator",
+    "description": "generator migration files if you never use it",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jaguarjack",
+            "email": "njphper@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "doctrine/dbal": "^2.9"
+    }
+}
