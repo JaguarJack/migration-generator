@@ -36,7 +36,7 @@ class DocManager
 
     protected $doctrineConnection = null;
 
-    private $types = [
+    private static $types = [
         DbType::CHAR                => CharType::class,
         DbType::ENUM                => EnumType::class,
         DbType::GEOMETRY            => GeometryType::class,
@@ -55,10 +55,11 @@ class DocManager
 
     /**
      * DocManager constructor.
-     * @param $config
+     * @param $frame
      * @throws \Doctrine\DBAL\DBALException
+     * @throws EmptyInDatabaseException
      */
-    public function __construct($frame)
+    public function __construct(string $frame)
     {
         $this->frame = strtolower($frame);
 
@@ -72,6 +73,7 @@ class DocManager
      *
      * @time 2019年10月20日
      * @return \Doctrine\DBAL\Schema\AbstractSchemaManager|\Doctrine\DBAL\Schema\MySqlSchemaManager|\Doctrine\DBAL\Schema\OracleSchemaManager|\Doctrine\DBAL\Schema\PostgreSqlSchemaManager|\Doctrine\DBAL\Schema\SqliteSchemaManager|\Doctrine\DBAL\Schema\SQLServerSchemaManager
+     * @throws \Exception
      * @throws EmptyInDatabaseException
      * @throws \Doctrine\DBAL\DBALException
      */
@@ -85,9 +87,9 @@ class DocManager
     }
 
     /**
-     * get
+     * get doctrine manage
      *
-     * @time 2019年10月20日
+     * @throws EmptyInDatabaseException
      * @throws \Doctrine\DBAL\DBALException
      * @return \Doctrine\DBAL\Platforms\AbstractPlatform
      */
@@ -137,10 +139,10 @@ class DocManager
     /**
      * get doctrine connection
      *
-     * @time 2019年10月20日
-     * @throws EmptyInDatabaseException
-     * @throws \Doctrine\DBAL\DBALException
      * @return Connection
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Exception
+     * @throws EmptyInDatabaseException
      */
     protected function getThinkPhpDoctrineConnection(): Connection
     {
@@ -152,7 +154,6 @@ class DocManager
     /**
      * get doctrine driver
      *
-     * @time 2019年10月20日
      * @throws \Exception
      */
     protected function getDoctrineDriver()
@@ -176,7 +177,6 @@ class DocManager
     /**
      * GET thinkphp Pdo Object
      *
-     * @time 2019年10月20日
      * @throws EmptyInDatabaseException
      * @return mixed
      */
@@ -198,9 +198,10 @@ class DocManager
      * @throws \Doctrine\DBAL\DBALException
      * @return void
      */
-    protected function registerNewType()
+    protected function registerNewType(): void
     {
-        foreach ($this->types as $dbType => $class) {
+        dd(static::$types);
+        foreach (static::$types as $dbType => $class) {
             DoctrineType::addType($dbType, $class);
         }
     }
@@ -209,10 +210,11 @@ class DocManager
      * register map
      *
      * @time 2019年10月20日
-     * @throws \Doctrine\DBAL\DBALException
      * @return void
+     * @throws EmptyInDatabaseException
+     * @throws \Doctrine\DBAL\DBALException
      */
-    protected function registerDoctrineTypeMapping()
+    protected function registerDoctrineTypeMapping(): void
     {
         foreach ($this->types as $dbType => $class) {
             $this->getDatabasePlatform()->registerDoctrineTypeMapping($dbType, $dbType);
@@ -233,12 +235,24 @@ class DocManager
     /**
      * is thinkphp
      *
-     * @time 2019年10月20日
-     * @param $name
      * @return bool
      */
     protected function isThinkPHP()
     {
         return $this->frame === 'thinkphp';
+    }
+
+    /**
+     * 注册新类型
+     *
+     * @time 2019年10月22日
+     * @param array $types
+     * @return bool
+     */
+    public static function addTypes(array $types): bool
+    {
+        static::$types = array_merge(static::$types, $types);
+
+        return true;
     }
 }

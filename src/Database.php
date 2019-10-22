@@ -62,6 +62,7 @@ class Database
      * @time 2019年10月20日
      * @param $tableName
      * @return \Doctrine\DBAL\Schema\Index[]
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function getTableIndexes($tableName): array
     {
@@ -91,5 +92,16 @@ class Database
     public function getOriginTableInformation($tableName): array
     {
         return $this->doctrineConnection->fetchAll($this->doctrineManager->getDatabasePlatform()->getListTableColumnsSQL($tableName));
+    }
+
+    /**
+     *
+     * @param $method
+     * @param $arguments
+     * @return mixed
+     */
+    public function __call($method, $arguments)
+    {
+       return call_user_func_array([$this->doctrineManager, $method], $arguments);
     }
 }

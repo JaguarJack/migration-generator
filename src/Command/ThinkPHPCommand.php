@@ -24,7 +24,11 @@ class ThinkPHPCommand extends Command
     {
         $migrateGenerator = new MigrateGenerator('laravel');
 
-        $migrateGenerator->generate();
+        $migrateGenerator->registerNewType([
+            'uuid' => 'uuid',
+        ]);
+
+        $migrateGenerator->generate($this->app->getRootPath() . '/databases/migrations/');
 
         $output->info('generate all table successful');
     }

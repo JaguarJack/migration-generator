@@ -20,11 +20,13 @@ class MigrateGenerator
     /**
      *
      * @time 2019年10月21日
-     * @throws Exceptions\EmptyInDatabaseException
-     * @throws \Doctrine\DBAL\DBALException
+     * @param string $generatePath
      * @return void
+     * @throws \Exception
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws Exceptions\EmptyInDatabaseException
      */
-    public function generate(): void
+    public function generate(string $generatePath): void
     {
         $database = new Database($this->getDoctrineManage());
 
@@ -33,9 +35,23 @@ class MigrateGenerator
         foreach ($tables as $key => $table) {
             $table->addOption('name', $table->getName());
             $table->addOption('origin', $database->getOriginTableInformation($table->getName()));
-            file_put_contents(app()->getRootPath().'/database/migrations/' . date('YmdHis') . "{$key}_" . $table->getName() . '.php',
-            $this->getMigrationContent($table));
+            $this->generateMigrationFile($generatePath, $table);
         }
+    }
+
+    /**
+     * generate file
+     *
+     * @param string $generatePath
+     * @param $table
+     * @throws \Exception
+     * @return void
+     */
+    protected function generateMigrationFile(string $generatePath, $table): void
+    {
+        $file = $generatePath . date('YmdHis') . random_int(0, 999999) . '_' . $table->getName() . '.php';
+
+        file_put_contents($file, $this->getMigrationContent($table));
     }
 
     /**
@@ -66,11 +82,23 @@ class MigrateGenerator
      * get doctrine manage
      *
      * @time 2019年10月21日
-     * @throws \Doctrine\DBAL\DBALException
      * @return DocManager
+     * @throws Exceptions\EmptyInDatabaseException
+     * @throws \Doctrine\DBAL\DBALException
      */
-    protected function getDoctrineManage()
+    protected function getDoctrineManage(): DocManager
     {
        return (new DocManager($this->frame));
+    }
+
+    /**
+     * 注册新类型
+     *
+     * @param array $types
+     * @return bool
+     */
+    public function registerNewType(array $types): bool
+    {
+        return DocManager::addTypes($types);
     }
 }
