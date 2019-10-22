@@ -12,5 +12,23 @@
     "minimum-stability": "dev",
     "require": {
         "doctrine/dbal": "^2.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "JaguarJack\\MigrateGenerator\\": "src"
+        },
+        "files": []
+    },
+    "extra": {
+        "think": {
+            "services": [
+                "JaguarJack\\MigrateGenerator\\Provider\\ThinkphpMigrateGeneratorService"
+            ]
+        },
+        "laravel": {
+            "providers": [
+                "JaguarJack\\MigrateGenerator\\Provider\\LaravelMigrateGeneratorServiceProvider"
+            ]
+        }
     }
 }
