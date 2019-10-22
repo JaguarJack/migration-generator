@@ -33,6 +33,10 @@ abstract class AbstractMigration
     protected $columnType;
 
     /**
+     * @var string
+     */
+    protected $frame;
+    /**
      * @var array
      */
     protected $indexes;
@@ -80,6 +84,19 @@ abstract class AbstractMigration
         $this->columns = $table->getColumns();
 
         $this->indexes = $table->getIndexes();
+
+        return $this;
+    }
+
+    /**
+     * set frame
+     *
+     * @param string $frame
+     * @return $this
+     */
+    public function setFrame(string $frame): self
+    {
+        $this->frame = ucfirst($frame);
 
         return $this;
     }

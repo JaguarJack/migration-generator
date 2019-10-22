@@ -63,7 +63,7 @@ class MigrateGenerator
      */
     public function getMigrationContent($table)
     {
-        return $this->getMigrationCreator()->setTable($table)->output();
+        return $this->getMigrationCreator()->setTable($table)->setFrame($this->frame)->output();
     }
 
     /**

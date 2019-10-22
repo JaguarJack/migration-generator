@@ -24,19 +24,8 @@ class ThinkPHPCommand extends Command
     {
         $migrateGenerator = new MigrateGenerator('thinkphp');
 
-        /**$migrateGenerator->registerNewType([
-            'uuid' => 'uuid',
-        ]);**/
 
-        $migrateGenerator->registerNewColumnType([
-            'uuid' => 'uuid',
-            'uuids' => 'uuid',
-
-            'uuidd' => 'uuid',
-            'uuidad' => 'uuid',
-        ]);
-
-        $migrateGenerator->generate($this->app->getRootPath() . '/databases/migrations/');
+        $migrateGenerator->generate($this->app->getRootPath() . '/database/migrations/');
 
         $output->info('generate all table successful');
     }

@@ -26,55 +26,8 @@ abstract class AbstractType
     /**
      * @return string
      */
-    abstract public function laravelMigrationColumn(): string ;
+    abstract public function migrateColumn(): string ;
 
-    /**
-     * @return string
-     */
-    abstract public function thinkphpMigrationColumn(): string;
-
-    /**
-     * get column options
-     *
-     * @param int $limit
-     * @param int $precision
-     * @param int $scale
-     * @return string
-     */
-    protected function columnOptions($limit = 0, int $precision = 0, int $scale = 0): string
-    {
-        $options = '[';
-
-        if ($limit) {
-            $options .= sprintf("'limit' => %s,", $limit);
-        }
-
-        if ($precision) {
-            $options .= "'precision' => {$precision},";
-        }
-
-        if ($scale) {
-            $options .= "'scale' => {$scale},";
-        }
-
-        if ($this->column->getNotnull()) {
-            $options .= "'null' => false,";
-
-            if (!$this->isCanSetDefaultValue()) {
-                $options .= sprintf("'default' => %s,", $this->getDefault());
-            }
-        } else {
-            $options .= "'null' => true,";
-        }
-
-        $options .= "'comment' => '{$this->column->getComment()}',";
-
-        $options .= "'signed' => " . ($this->column->getUnsigned() ? 'true' : 'false') . ',';
-
-        $options .= ']';
-
-        return $options;
-    }
 
     /**
      *
@@ -125,43 +78,5 @@ abstract class AbstractType
     protected function getThinkphpField($type, $options): string
     {
         return sprintf("('%s', '%s', %s)", $this->column->getName(), $type, $options);
-    }
-
-    /**
-     * Laravel frame temp
-     *
-     * @param $method
-     * @return string
-     */
-    protected function getLaravelField($method): string
-    {
-        return sprintf("%s('%s')%s", $method, $this->column->getName(), $this->laravelOptions());
-    }
-
-    /**
-     * laravel options
-     *
-     * @return string
-     */
-    protected function laravelOptions(): string
-    {
-        $options = '';
-
-        if ($this->column->getUnsigned()) {
-            $options .= '->unsigned();';
-        }
-
-        if ($this->column->getNotnull()) {
-            $options .= '->nullable(false)';
-            if ($this->isCanSetDefaultValue()) {
-                $options .= "->default({$this->getDefault()})";
-            }
-        } else {
-            $options .= '->nullable()';
-        }
-
-        $options .= "->comment('{$this->column->getComment()}');";
-
-        return $options;
     }
 }

@@ -29,7 +29,7 @@ class ThinkPHPMigration extends AbstractMigration
             sprintf("['engine' => '%s', 'collation' => '%s', 'comment' => '%s' %s %s]",
                 $this->table['engine'], $this->table['collation'], $this->table['comment'], $this->getAutoIncrement(), $this->getPrimaryKeys()),
 
-           $this->head() . $this->getMigrationContent()
+           '$table' . $this->getMigrationContent()
         ];
     }
 

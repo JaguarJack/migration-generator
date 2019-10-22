@@ -16,13 +16,13 @@ trait MigrationTrait
      */
     protected function parseColumn()
     {
-        dd(static::$extendColumn);
         $className = $this->getTypeClassName();
 
         $migrationColumnClass = $this->getExtendColumn($className);
 
         if (!$migrationColumnClass) {
-            $migrationColumnClass = '\\JaguarJack\\MigrateGenerator\\Migration\\Columns\\' . $className;
+            $migrationColumnClass = '\\JaguarJack\\MigrateGenerator\\Migration\\Columns\\' .
+                $this->frame . '\\' . $className;
 
             if (!class_exists($migrationColumnClass)) {
                 throw new \Exception(sprintf('%s not found', $migrationColumnClass));
@@ -32,15 +32,7 @@ trait MigrationTrait
 
         $migrationColumn = new $migrationColumnClass($this->column, $this->table['origin']);
 
-        if (stripos(get_class($this), 'laravel') !== false) {
-            return $migrationColumn->laravelMigrationColumn();
-        }
-
-        if (stripos(get_class($this), 'thinkphp') !== false) {
-            return $migrationColumn->thinkphpMigrationColumn();
-        }
-
-        throw new UnSupportedFrameException('unsupported frame migration generate');
+        return $migrationColumn->migrateColumn();
     }
 
     /**
@@ -62,7 +54,7 @@ trait MigrationTrait
     protected function getExtendColumn($className): bool
     {
         if (isset(static::$extendColumn[$className])) {
-            return static::$extendColumn[$className];
+            return static::$extendColumn[$className][$this->frame];
         }
 
         return false;
