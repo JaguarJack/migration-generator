@@ -1,0 +1,2 @@
+# migration-generator
+migration generator
