@@ -34,7 +34,6 @@ class MigrateGenerator
             $table->addOption('name', $table->getName());
             $table->addOption('origin', $database->getOriginTableInformation($table->getName()));
             file_put_contents(app()->getRootPath().'/database/migrations/' . date('YmdHis') . "{$key}_" . $table->getName() . '.php',
-
             $this->getMigrationContent($table));
         }
     }
@@ -51,6 +50,17 @@ class MigrateGenerator
         return MigrationFactory::create($this->frame)->setTable($table)->output();
     }
 
+    /**
+     * get database
+     *
+     * @throws Exceptions\EmptyInDatabaseException
+     * @throws \Doctrine\DBAL\DBALException
+     * @return Database
+     */
+    public function getDatabase(): Database
+    {
+        return new Database($this->getDoctrineManage());
+    }
 
     /**
      * get doctrine manage

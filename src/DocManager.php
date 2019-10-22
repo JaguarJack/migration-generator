@@ -109,8 +109,8 @@ class DocManager
     {
         if (!$this->doctrineConnection) {
             if ($this->isLaravel()) {
-                //return $this->getLaravelDoctrineConnection();
-                return $this->getThinkPhpDoctrineConnection();
+                return $this->getLaravelDoctrineConnection();
+                //return $this->getThinkPhpDoctrineConnection();
             }
 
             if ($this->isThinkPHP()) {
