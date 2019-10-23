@@ -33,8 +33,6 @@ class MigrateGenerator
         $tables = $database->getAllTables();
 
         foreach ($tables as $key => $table) {
-            $table->addOption('name', $table->getName());
-            $table->addOption('origin', $database->getOriginTableInformation($table->getName()));
             $this->generateMigrationFile($generatePath, $table);
         }
     }

@@ -27,10 +27,18 @@ class Database
      *
      * @time 2019年10月20日
      * @return \Doctrine\DBAL\Schema\Table[]
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function getAllTables(): array
     {
-        return $this->doctrineManager->listTables();
+        $tables = $this->doctrineManager->listTables();
+
+        foreach ($tables as &$table) {
+            $table->addOption('name', $table->getName());
+            $table->addOption('origin', $this->getOriginTableInformation($table->getName()));
+        }
+
+        return $tables;
     }
 
     /**
