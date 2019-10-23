@@ -15,7 +15,7 @@ class ThinkPHPCommand extends Command
     protected function configure()
     {
         // 指令配置
-        $this->setName('generator')
+        $this->setName('migration:generate')
             ->setDescription('the app\command\generator command');
     }
 
