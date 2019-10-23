@@ -24,23 +24,47 @@ abstract class AbstractType extends Type
      */
     protected function options(): string
     {
-        $options = '';
-
-        if ($this->column->getUnsigned()) {
-            $options .= '->unsigned();';
-        }
-
-        if ($this->column->getNotnull()) {
-            $options .= '->nullable(false)';
-            if ($this->isCanSetDefaultValue()) {
-                $options .= "->default({$this->getDefault()})";
-            }
-        } else {
-            $options .= '->nullable()';
-        }
-
-        $options .= "->comment('{$this->column->getComment()}');";
-
-        return $options;
+        return $this->getNull() . $this->getComment();
     }
+
+    /**
+     * get unsigned
+     *
+     * @return string
+     */
+    protected function getUnsigned(): ?string
+    {
+        if ($this->column->getUnsigned()) {
+            return '->unsigned()';
+        }
+    }
+
+    /**
+     * get null
+     *
+     * @return string
+     */
+    protected function getNull(): string
+    {
+        if ($this->column->getNotnull()) {
+            $null = '->nullable(false)';
+            if ($this->isCanSetDefaultValue()) {
+                $null .= "->default({$this->getDefault()})";
+            }
+            return $null;
+        }
+
+        return '->nullable()';
+    }
+
+    /**
+     * get comment
+     *
+     * @return string
+     */
+    protected function getComment(): string
+    {
+       return "->comment('{$this->column->getComment()}');";
+    }
+
 }

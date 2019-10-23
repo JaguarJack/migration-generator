@@ -133,7 +133,7 @@ class DocManager
      */
     protected function getLaravelDoctrineConnection()
     {
-        return \Illuminate\Support\Facades\DB::connection()->getDoctrineSchemaManager();
+        return \Illuminate\Support\Facades\DB::connection()->getDoctrineConnection();
     }
 
     /**

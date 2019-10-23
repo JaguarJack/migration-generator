@@ -3,8 +3,7 @@
 namespace JaguarJack\MigrateGenerator\Migration;
 
 use Doctrine\DBAL\Schema\Index;
-use think\helper\Str;
-use Illuminate\Support\Str as LaravelStr;
+use Illuminate\Support\Str;
 
 class LaravelMigration extends AbstractMigration
 {
@@ -30,7 +29,7 @@ class LaravelMigration extends AbstractMigration
            ucfirst(Str::camel($this->table['name'])),
            $this->table['name'],
            $this->table['engine'],
-           explode(',', $this->table['collation'])[0],
+           explode('_', $this->table['collation'])[0],
            $this->table['collation'],
            $this->getTableComment(),
            $this->getMigrationContent(),
@@ -56,7 +55,7 @@ class LaravelMigration extends AbstractMigration
     {
         return $this->table['comment'] ?
 
-            sprintf('DB::statement("alter table `%s` comment '. "'{$this->table['name']}'" .'");', $this->table['name'], $this->table['comment'])
+            sprintf('DB::statement("alter table `%s` comment '. "'%s'" .'");', $this->table['name'], $this->table['comment'])
 
             : '';
     }
@@ -77,6 +76,7 @@ class LaravelMigration extends AbstractMigration
      *
      * @time 2019年10月22日
      * @return string
+     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     protected function parseIndexes()
     {
@@ -100,7 +100,7 @@ class LaravelMigration extends AbstractMigration
     protected function parseIndex(Index $index)
     {
         if ($index->isUnique()) {
-            return $this->head() . "unique('{$index->getColumns()[0]}', '{$index->getName()}', '{$index->getName()}');" . $this->eof();
+            return $this->head() . "unique('{$index->getColumns()[0]}', '{$index->getName()}');" . $this->eof();
         }
 
         if (count($index->getColumns()) > 1) {
@@ -119,6 +119,7 @@ class LaravelMigration extends AbstractMigration
      * get primary keys
      *
      * @return string
+     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     protected function getPrimaryKeys(): string
     {
@@ -129,6 +130,12 @@ class LaravelMigration extends AbstractMigration
         }
 
         $columns = $this->indexes['primary']->getColumns();
+
+        $this->removeAutoPrimaryKey($columns);
+
+        if (!count($columns)) {
+            return $primary;
+        }
 
         if (count($columns) > 1) {
             $primary .= '[';
@@ -143,5 +150,21 @@ class LaravelMigration extends AbstractMigration
 
 
         return $this->head() . sprintf('primary(%s);', $primary) . $this->eof();
+    }
+
+    /**
+     * remove autoincrement primary key
+     *
+     * @param $columns
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @return void
+     */
+    protected function removeAutoPrimaryKey(&$columns): void
+    {
+        foreach ($columns as $key => $column) {
+            if ($this->_table->getColumn($column)->getAutoincrement()) {
+                unset($columns[$key]);
+            }
+        }
     }
 }
