@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Create;
+namespace JaguarJack\MigrateGenerator\Command;
 
 use Illuminate\Console\Command;
 use JaguarJack\MigrateGenerator\MigrateGenerator;
