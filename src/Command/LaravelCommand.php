@@ -45,7 +45,7 @@ class LaravelCommand extends Command
 
         foreach ($tables as $key => $table) {
 
-            file_put_contents(database_path( 'migrations/')  . date('YmdHis') . '_' . $table->getName(). '.php' ,
+            file_put_contents(database_path( 'migrations/')  . date('Y_m_d_His') . '_' . $table->getName(). '.php' ,
 
                 $migrateGenerator->getMigrationContent($table));
 
