@@ -67,16 +67,4 @@ abstract class AbstractType
             'blob', 'text', 'date', 'json', 'geometry', 'multigeometry', 'timestamp',
         ];
     }
-
-    /**
-     * thinkphp frame temp
-     *
-     * @param $type
-     * @param $options
-     * @return string
-     */
-    protected function getThinkphpField($type, $options): string
-    {
-        return sprintf("('%s', '%s', %s)", $this->column->getName(), $type, $options);
-    }
 }

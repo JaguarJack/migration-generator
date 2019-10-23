@@ -29,7 +29,7 @@ class ThinkPHPMigration extends AbstractMigration
             sprintf("['engine' => '%s', 'collation' => '%s', 'comment' => '%s' %s %s]",
                 $this->table['engine'], $this->table['collation'], $this->table['comment'], $this->getAutoIncrement(), $this->getPrimaryKeys()),
 
-           '$table' . $this->getMigrationContent()
+           '$table' . rtrim($this->getMigrationContent(), $this->eof())
         ];
     }
 
@@ -102,7 +102,7 @@ class ThinkPHPMigration extends AbstractMigration
         $indexes = '';
         foreach ($this->indexes as $index) {
             if (!$index->isPrimary()) {
-                $indexes .= sprintf("->addIndex(%s)\r\n", $this->parseIndex($index));
+                $indexes .= sprintf('->addIndex(%s)', $this->parseIndex($index)) . $this->eof();
             }
         }
 

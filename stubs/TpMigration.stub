@@ -31,6 +31,6 @@ class {MIGRATOR} extends Migrator
     {
         $table = $this->table('{TABLE}', {TABLE_INFORMATION});
         {MIGRATION_CONTENT}
-        ->create();
+            ->create();
     }
 }

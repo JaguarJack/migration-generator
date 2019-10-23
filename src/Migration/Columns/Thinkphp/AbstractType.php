@@ -28,7 +28,7 @@ abstract class AbstractType extends Type
      */
     protected function columnOptions($limit = 0, int $precision = 0, int $scale = 0): string
     {
-        $options = '[';
+        $options = '';
 
         if ($limit) {
             $options .= sprintf("'limit' => %s,", $limit);
@@ -42,22 +42,32 @@ abstract class AbstractType extends Type
             $options .= "'scale' => {$scale},";
         }
 
+        return '[' . $options . $this->getNull() . $this->getSigned() . $this->getComment() . ']';
+    }
+
+    protected function getComment()
+    {
+        return sprintf("'comment' => '%s',", $this->column->getComment());
+    }
+
+    protected function getSigned()
+    {
+        return sprintf("'signed' => %s,", $this->column->getUnsigned() ? 'true' : 'false');
+    }
+
+    protected function getNull()
+    {
         if ($this->column->getNotnull()) {
-            $options .= "'null' => false,";
+            $null = "'null' => false,";
 
             if (!$this->isCanSetDefaultValue()) {
-                $options .= sprintf("'default' => %s,", $this->getDefault());
+                $null .= sprintf("'default' => %s,", $this->getDefault());
             }
-        } else {
-            $options .= "'null' => true,";
+
+            return $null;
         }
 
-        $options .= "'comment' => '{$this->column->getComment()}',";
+        return  "'null' => true,";
 
-        $options .= "'signed' => " . ($this->column->getUnsigned() ? 'true' : 'false') . ',';
-
-        $options .= ']';
-
-        return $options;
     }
 }

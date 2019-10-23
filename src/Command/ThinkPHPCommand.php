@@ -11,7 +11,6 @@ use JaguarJack\MigrateGenerator\MigrateGenerator;
 
 class ThinkPHPCommand extends Command
 {
-    protected $manger = null;
 
     protected function configure()
     {
@@ -25,6 +24,11 @@ class ThinkPHPCommand extends Command
         $migrateGenerator = new MigrateGenerator('thinkphp');
 
 
+        $tables = $migrateGenerator->getDatabase()->getAllTables();
+
+        foreach ($tables as $table) {
+
+        }
         $migrateGenerator->generate($this->app->getRootPath() . '/database/migrations/');
 
         $output->info('generate all table successful');
