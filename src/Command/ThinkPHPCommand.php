@@ -21,17 +21,17 @@ class ThinkPHPCommand extends Command
 
     protected function execute(Input $input, Output $output)
     {
-        $migrateGenerator = new MigrateGenerator('thinkphp');
+        $migrateGenerator = (new MigrateGenerator('thinkphp'));
 
 
         $tables = $migrateGenerator->getDatabase()->getAllTables();
+        foreach ($tables as $key => $table) {
+           file_put_contents($this->app->getRootPath() . '/database/migrations/' . $key . date('YmdHis') . '_' . $table->getName(). '.php' ,
 
-        foreach ($tables as $table) {
+               $migrateGenerator->getMigrationContent($table));
 
+           $output->info(sprintf('%s table migration file generated', $table->getName()));
         }
-        $migrateGenerator->generate($this->app->getRootPath() . '/database/migrations/');
-
-        $output->info('generate all table successful');
     }
 }
 

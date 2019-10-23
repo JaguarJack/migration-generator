@@ -67,6 +67,10 @@ class ThinkPHPMigration extends AbstractMigration
     {
         $primary = '';
 
+        if (!isset($this->indexes['primary'])) {
+            return $primary;
+        }
+
         foreach ($this->indexes['primary']->getColumns() as $column) {
             $primary .= "'{$column}',";
         }

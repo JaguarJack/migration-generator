@@ -22,11 +22,11 @@ abstract class AbstractType extends Type
      * get column options
      *
      * @param int $limit
-     * @param int $precision
-     * @param int $scale
+     * @param $precision
+     * @param $scale
      * @return string
      */
-    protected function columnOptions($limit = 0, int $precision = 0, int $scale = 0): string
+    protected function columnOptions($limit = 0, $precision = null,  $scale = null): string
     {
         $options = '';
 
@@ -34,11 +34,11 @@ abstract class AbstractType extends Type
             $options .= sprintf("'limit' => %s,", $limit);
         }
 
-        if ($precision) {
+        if ($precision !== null) {
             $options .= "'precision' => {$precision},";
         }
 
-        if ($scale) {
+        if ($scale !== null) {
             $options .= "'scale' => {$scale},";
         }
 

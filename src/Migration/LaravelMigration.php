@@ -124,6 +124,10 @@ class LaravelMigration extends AbstractMigration
     {
         $primary = '';
 
+        if (!isset($this->indexes['primary'])) {
+            return $primary;
+        }
+
         $columns = $this->indexes['primary']->getColumns();
 
         if (count($columns) > 1) {
