@@ -13,9 +13,14 @@ abstract class AbstractMigration
     use MigrationTrait;
 
     /**
-     * @var Table
+     * @var array
      */
     protected $table;
+
+    /**
+     * @var Table
+     */
+    protected $_table;
 
     /**
      * @var Column[]
@@ -79,6 +84,8 @@ abstract class AbstractMigration
      */
     public function setTable(Table $table): self
     {
+        $this->_table = $table;
+
         $this->table = $table->getOptions();
 
         $this->columns = $table->getColumns();
