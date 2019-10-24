@@ -1,5 +1,5 @@
 {
-    "name": "jaguarjack/migrate-generator",
+    "name": "jaguarjack/migration-generator",
     "description": "generator migration files if you never use it",
     "type": "library",
     "license": "MIT",
