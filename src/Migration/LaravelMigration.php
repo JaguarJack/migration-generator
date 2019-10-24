@@ -4,6 +4,7 @@ namespace JaguarJack\MigrateGenerator\Migration;
 
 use Doctrine\DBAL\Schema\Index;
 use Illuminate\Support\Str;
+use JaguarJack\MigrateGenerator\Migration\Indexes\LaraveMigrationIndexes;
 
 class LaravelMigration extends AbstractMigration
 {
@@ -72,99 +73,12 @@ class LaravelMigration extends AbstractMigration
     }
 
     /**
-     * parse indexes
-     *
-     * @time 2019年10月22日
-     * @return string
-     * @throws \Doctrine\DBAL\Schema\SchemaException
-     */
-    protected function parseIndexes()
-    {
-        $indexes = $this->getPrimaryKeys();
-
-        foreach ($this->indexes as $index) {
-            if (!$index->isPrimary()) {
-                $indexes .= $this->parseIndex($index);
-            }
-        }
-
-        return $indexes;
-    }
-
-    /**
-     * parse index
-     *
-     * @param Index $index
-     * @return string
-     */
-    protected function parseIndex(Index $index)
-    {
-        if ($index->isUnique()) {
-            return $this->head() . "unique('{$index->getColumns()[0]}', '{$index->getName()}');" . $this->eof();
-        }
-
-        if (count($index->getColumns()) > 1) {
-            $_column = '';
-            foreach ($index->getColumns() as $column) {
-                $_column .= "'{$column}',";
-            }
-            return $this->head() . sprintf("index([%s], '%s');", trim($_column, ','), $index->getName()) . $this->eof();
-        }
-
-
-        return $this->head() . sprintf("index('%s', '%s');", $index->getColumns()[0], $index->getName()) . $this->eof();
-    }
-
-    /**
-     * get primary keys
      *
      * @return string
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    protected function getPrimaryKeys(): string
+    protected function parseIndexes(): string
     {
-        $primary = '';
-
-        if (!isset($this->indexes['primary'])) {
-            return $primary;
-        }
-
-        $columns = $this->indexes['primary']->getColumns();
-
-        $this->removeAutoPrimaryKey($columns);
-
-        if (!count($columns)) {
-            return $primary;
-        }
-
-        if (count($columns) > 1) {
-            $primary .= '[';
-            foreach ($columns as $column) {
-                $primary.= "'{$column}',";
-            }
-            $primary = trim($primary, ',');
-            $primary .= ']';
-        } else{
-            $primary .= "'{$columns[0]}'";
-        }
-
-
-        return $this->head() . sprintf('primary(%s);', $primary) . $this->eof();
-    }
-
-    /**
-     * remove autoincrement primary key
-     *
-     * @param $columns
-     * @throws \Doctrine\DBAL\Schema\SchemaException
-     * @return void
-     */
-    protected function removeAutoPrimaryKey(&$columns): void
-    {
-        foreach ($columns as $key => $column) {
-            if ($this->_table->getColumn($column)->getAutoincrement()) {
-                unset($columns[$key]);
-            }
-        }
+       return str_replace($this->headString(), $this->head(), (new LaraveMigrationIndexes($this->_table))->parseIndexes());
     }
 }

@@ -108,23 +108,6 @@ abstract class AbstractMigration
         return $this;
     }
 
-    /**
-     * get autoincrement field
-     *
-     * @time 2019年10月21日
-     * @return array|null
-     */
-    protected function getAutoIncrementField(): ?array
-    {
-        foreach ($this->columns as $key => $column) {
-            if ($column->getAutoincrement()) {
-                unset($this->columns[$key]);
-                return [$column->getName(), $column->getUnsigned()];
-            }
-        }
-
-        return null;
-    }
 
     /**
      * get migration content
@@ -148,16 +131,6 @@ abstract class AbstractMigration
         $content .= $this->parseIndexes();
 
         return $content;
-    }
-
-    /**
-     * eof
-     *
-     * @return string
-     */
-    protected function eof(): string
-    {
-        return "\r\n\t\t\t";
     }
 
     /**

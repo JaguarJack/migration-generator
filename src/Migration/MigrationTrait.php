@@ -47,6 +47,18 @@ trait MigrationTrait
     }
 
     /**
+     * replace
+     *
+     * @time 2019年10月24日
+     * @return string
+     */
+    protected function headString(): string
+    {
+        return '{head}';
+    }
+
+
+    /**
      *
      * @param $className
      * @return bool
@@ -58,5 +70,34 @@ trait MigrationTrait
         }
 
         return false;
+    }
+
+
+    /**
+     * eof
+     *
+     * @return string
+     */
+    protected function eof(): string
+    {
+        return "\r\n\t\t\t";
+    }
+
+    /**
+     * get autoincrement field
+     *
+     * @time 2019年10月21日
+     * @return array|null
+     */
+    protected function getAutoIncrementField(): ?array
+    {
+        foreach ($this->columns as $key => $column) {
+            if ($column->getAutoincrement()) {
+                unset($this->columns[$key]);
+                return [$column->getName(), $column->getUnsigned()];
+            }
+        }
+
+        return null;
     }
 }
