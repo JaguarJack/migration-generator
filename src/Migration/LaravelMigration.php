@@ -38,7 +38,7 @@ class LaravelMigration extends AbstractMigration
     }
 
     /**
-     * 被替换的字符
+     * replaced string
      *
      * @return array
      */
@@ -64,7 +64,6 @@ class LaravelMigration extends AbstractMigration
     /**
      * parse head
      *
-     * @time 2019年10月21日
      * @return string
      */
     protected function head()

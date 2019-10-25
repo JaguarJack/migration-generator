@@ -19,7 +19,6 @@ class MigrateGenerator
 
     /**
      *
-     * @time 2019年10月21日
      * @param string $generatePath
      * @return void
      * @throws \Exception
@@ -47,15 +46,12 @@ class MigrateGenerator
      */
     protected function generateMigrationFile(string $generatePath, $table): void
     {
-        $file = $generatePath . date('YmdHis') . random_int(0, 999999) . '_' . $table->getName() . '.php';
-
-        file_put_contents($file, $this->getMigrationContent($table));
+        file_put_contents($generatePath . date('Y_m_d_His') . $table->getName() . '.php', $this->getMigrationContent($table));
     }
 
     /**
      * get migration content
      *
-     * @time 2019年10月21日
      * @param $table
      * @return mixed
      */
@@ -89,7 +85,6 @@ class MigrateGenerator
     /**
      * get doctrine manage
      *
-     * @time 2019年10月21日
      * @return DocManager
      * @throws Exceptions\EmptyInDatabaseException
      * @throws \Doctrine\DBAL\DBALException

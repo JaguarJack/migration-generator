@@ -25,7 +25,6 @@ class Database
     /**
      * get all tables
      *
-     * @time 2019年10月20日
      * @return \Doctrine\DBAL\Schema\Table[]
      * @throws \Doctrine\DBAL\DBALException
      */
@@ -44,7 +43,6 @@ class Database
     /**
      * get databases
      *
-     * @time 2019年10月20日
      * @return string[]
      */
     public function getDatabases(): array
@@ -55,7 +53,6 @@ class Database
     /**
      * get table detail
      *
-     * @time 2019年10月20日
      * @param $tableName
      * @return mixed[]
      */
@@ -67,7 +64,6 @@ class Database
     /**
      * get table indexes
      *
-     * @time 2019年10月20日
      * @param $tableName
      * @return \Doctrine\DBAL\Schema\Index[]
      * @throws \Doctrine\DBAL\DBALException
@@ -80,7 +76,6 @@ class Database
     /**
      * get table columns
      *
-     * @time 2019年10月20日
      * @param $tableName
      * @return \Doctrine\DBAL\Schema\Column[]
      */
@@ -92,7 +87,6 @@ class Database
     /**
      * 获取原始信息
      *
-     * @time 2019年10月21日
      * @param $tableName
      * @throws \Doctrine\DBAL\DBALException
      * @return mixed[]

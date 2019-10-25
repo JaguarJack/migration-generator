@@ -71,7 +71,6 @@ class DocManager
     /**
      * get doctrine manager
      *
-     * @time 2019年10月20日
      * @return \Doctrine\DBAL\Schema\AbstractSchemaManager|\Doctrine\DBAL\Schema\MySqlSchemaManager|\Doctrine\DBAL\Schema\OracleSchemaManager|\Doctrine\DBAL\Schema\PostgreSqlSchemaManager|\Doctrine\DBAL\Schema\SqliteSchemaManager|\Doctrine\DBAL\Schema\SQLServerSchemaManager
      * @throws \Exception
      * @throws EmptyInDatabaseException
@@ -101,7 +100,6 @@ class DocManager
     /**
      * get doctrine connection
      *
-     * @time 2019年10月20日
      * @return Connection
      * @throws EmptyInDatabaseException
      * @throws \Doctrine\DBAL\DBALException
@@ -128,7 +126,6 @@ class DocManager
     /**
      * get Laravel Doctrine connection
      *
-     * @time 2019年10月20日
      * @return mixed
      */
     protected function getLaravelDoctrineConnection()
@@ -208,7 +205,6 @@ class DocManager
     /**
      * register map
      *
-     * @time 2019年10月20日
      * @return void
      * @throws EmptyInDatabaseException
      * @throws \Doctrine\DBAL\DBALException
@@ -242,9 +238,8 @@ class DocManager
     }
 
     /**
-     * 注册新类型
+     * register new Type
      *
-     * @time 2019年10月22日
      * @param array $types
      * @return bool
      */

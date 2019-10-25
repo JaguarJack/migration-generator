@@ -86,7 +86,6 @@ trait MigrationTrait
     /**
      * get autoincrement field
      *
-     * @time 2019年10月21日
      * @return array|null
      */
     protected function getAutoIncrementField(): ?array

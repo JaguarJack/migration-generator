@@ -24,7 +24,6 @@ class LaraveMigrationIndexes
     /**
      * parse indexes
      *
-     * @time 2019年10月22日
      * @return string
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */

@@ -15,8 +15,8 @@ class ThinkPHPMigration extends AbstractMigration
     }
 
     /*
+     * replace content
      *
-     * @time 2019年10月21日
      * @throws \Doctrine\DBAL\DBALException
      * @return array
      */
@@ -28,7 +28,7 @@ class ThinkPHPMigration extends AbstractMigration
             $this->table['name'],
             // phinx table information
             sprintf("['engine' => '%s', 'collation' => '%s', 'comment' => '%s' %s %s]",
-                $this->table['engine'], $this->table['collation'], $this->table['comment'], $this->getIndex()->getAutoIncrement(), $this->getIndex()->getPrimaryKeys()),
+                $this->table['engine'], $this->table['collation'], $this->table['comment'], $this->getIndexParse()->getAutoIncrement(), $this->getIndexParse()->getPrimaryKeys()),
 
            '$table' . rtrim($this->getMigrationContent(), $this->eof())
         ];
@@ -54,20 +54,23 @@ class ThinkPHPMigration extends AbstractMigration
     }
 
     /**
-     * 获取主
+     * get index parse
      *
-     * @time 2019年10月24日
      * @return ThinkphpMigrationIndexs
      */
-    protected function getIndex()
+    protected function getIndexParse()
     {
         return new ThinkphpMigrationIndexs($this->_table);
     }
 
-
+    /**
+     * parse index
+     *
+     * @return string
+     */
     protected function parseIndexes()
     {
-        return $this->getIndex()->parseIndexes();
+        return $this->getIndexParse()->parseIndexes();
     }
 
 }
