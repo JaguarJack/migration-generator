@@ -21,16 +21,41 @@ class ThinkPHPCommand extends Command
 
     protected function execute(Input $input, Output $output)
     {
+        $composer = \json_decode(file_get_contents($this->app->getRootPath() . 'composer.json'), true);
+
+        if (!isset($composer['require']['topthink/think-migration'])) {
+
+            fwrite(STDOUT, 'it found that you have not install [topthink/think-migration]?Y/N' . PHP_EOL);
+
+            $answer = strtolower(trim(fread(STDIN, 1024), PHP_EOL));
+
+            if ($answer == 'y' || $answer == 'yes') {
+                exec('composer require topthink/think-migration');
+            }
+        }
+
+        $this->generate($output);
+    }
+
+    protected function generate(Output $output)
+    {
         $migrateGenerator = (new MigrateGenerator('thinkphp'));
 
 
         $tables = $migrateGenerator->getDatabase()->getAllTables();
+
+        $migrationsPath = $this->app->getRootPath() . '/database/migrations/';
+
+        if (!is_dir($migrationsPath)) {
+            if (!mkdir($migrationsPath, 0777, true) && !is_dir($migrationsPath)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $migrationsPath));
+            }
+        }
+
         foreach ($tables as $key => $table) {
-           file_put_contents($this->app->getRootPath() . '/database/migrations/' . $key . date('YmdHis') . '_' . $table->getName(). '.php' ,
+            file_put_contents( $migrationsPath. $key . date('YmdHis') . '_' . $table->getName(). '.php' , $migrateGenerator->getMigrationContent($table));
 
-               $migrateGenerator->getMigrationContent($table));
-
-           $output->info(sprintf('%s table migration file generated', $table->getName()));
+            $output->info(sprintf('%s table migration file generated', $table->getName()));
         }
     }
 }

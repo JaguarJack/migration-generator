@@ -82,21 +82,4 @@ trait MigrationTrait
     {
         return "\r\n\t\t\t";
     }
-
-    /**
-     * get autoincrement field
-     *
-     * @return array|null
-     */
-    protected function getAutoIncrementField(): ?array
-    {
-        foreach ($this->columns as $key => $column) {
-            if ($column->getAutoincrement()) {
-                unset($this->columns[$key]);
-                return [$column->getName(), $column->getUnsigned()];
-            }
-        }
-
-        return null;
-    }
 }

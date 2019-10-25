@@ -133,6 +133,24 @@ class ThinkphpMigrationIndexs
         $limit .= '],';
 
         return $limit;
+    }
 
+    /**
+     * get autoincrement field
+     *
+     * @return array|null
+     */
+    protected function getAutoIncrementField(): ?array
+    {
+        $columns = $this->table->getColumns();
+
+        foreach ($columns as $key => $column) {
+            if ($column->getAutoincrement()) {
+                unset($columns[$key]);
+                return [$column->getName(), $column->getUnsigned()];
+            }
+        }
+
+        return null;
     }
 }

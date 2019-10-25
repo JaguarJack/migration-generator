@@ -22,6 +22,8 @@ class ThinkPHPMigration extends AbstractMigration
      */
     protected function getReplaceContent(): array
     {
+        $this->removeAutoincrementColumn();
+
         return [
             ucfirst(Str::camel($this->table['name'])),
             // table name
@@ -71,6 +73,21 @@ class ThinkPHPMigration extends AbstractMigration
     protected function parseIndexes()
     {
         return $this->getIndexParse()->parseIndexes();
+    }
+
+    /**
+     * remove autoincrement column
+     *
+     * @return void
+     */
+    protected function removeAutoincrementColumn()
+    {
+        foreach ($this->columns as $k => $column) {
+            if ($column->getAutoincrement()) {
+                unset($this->columns[$k]);
+                break;
+            }
+        }
     }
 
 }
