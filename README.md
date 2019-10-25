@@ -1,12 +1,13 @@
 # migration-generator
 ### 目的
 如果你还未使用或者正想使用数据库迁移功能，但又不并不想自己写迁移文件的话，这个工具可以很好的帮助实现文件迁移
-目前提供了 Laravel 和 Thinkphp 的迁移文件的生成。
+目前提供了 Laravel5.5+ 和 Thinkphp6+ 的迁移文件的生成。
 
 ### 如何使用
-- composer require jaguarjack/migrate-generator
+- composer require jaguarjack/migration-generator 1.0
 
 #### laravel
+
 - php artisan migration:generate
 
 #### ThinkPHP
@@ -69,10 +70,7 @@
 - 注入
 
 ```php
-(new MigrateGenerator('thinkphp'))
-->registerNewTypeParse([
-          'TypeClassName' => ParseTypeClass,
-    ]);
+(new MigrateGenerator('thinkphp'))->registerNewTypeParse(['TypeClassName' => ParseTypeClass]);
 ```
 > `TypeClassName` 指的就是新类型的类的名称
 `ParseTypeClass` 也必须和 `TypeClass` 相同，这是约定，方便更好的解析。
