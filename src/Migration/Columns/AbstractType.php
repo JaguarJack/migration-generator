@@ -54,7 +54,7 @@ abstract class AbstractType
      */
     protected function isCanSetDefaultValue(): bool
     {
-        return in_array($this->column->getType()->getName(), $this->cantHaveDefaultType()) && !$this->column->getDefault() ? true : false;
+        return (!in_array($this->column->getType()->getName(), $this->cantHaveDefaultType()) && !$this->column->getDefault()) ? true : false;
     }
 
     /**

@@ -80,7 +80,7 @@
 
 除了提供的自定义的命令外，通过两个对外接口自己生成文件
 ```php
-$migrateGenerator->getDatabase
+$migrateGenerat or->getDatabase
 ```
 > 这个方法可以获取表信息以及字段信息等等
 
