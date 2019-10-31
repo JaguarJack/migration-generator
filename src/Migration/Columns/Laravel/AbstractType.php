@@ -58,6 +58,10 @@ abstract class AbstractType extends Type
     protected function default()
     {
         if (!$this->isCanSetDefaultValue() && !$this->column->getAutoincrement()) {
+            if ($this->column->getNotnull() && $this->getDefault() == 'null') {
+                return '';
+            }
+
             return "->default({$this->getDefault()})";
         }
 
