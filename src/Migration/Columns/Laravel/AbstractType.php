@@ -50,7 +50,7 @@ abstract class AbstractType extends Type
             $null = '->nullable(false)';
             if ($this->isCanSetDefaultValue()) {
                 $default = $this->getDefault();
-                $null .= '->default('.is_numeric($default) ? $default : "'{$default}'". ')';
+                $null .= '->default('.(is_numeric($default) ? $default : "'{$default}'"). ')';
             }
             return $null;
         }
