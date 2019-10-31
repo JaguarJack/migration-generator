@@ -24,7 +24,7 @@ abstract class AbstractType extends Type
      */
     protected function options(): string
     {
-        return $this->getNull() . $this->getComment();
+        return $this->getNull() . $this->default() . $this->getComment();
     }
 
     /**
@@ -46,16 +46,22 @@ abstract class AbstractType extends Type
      */
     protected function getNull(): string
     {
-        if ($this->column->getNotnull()) {
-            $null = '->nullable(false)';
-            if ($this->isCanSetDefaultValue()) {
-                $default = $this->getDefault();
-                $null .= '->default('.(is_numeric($default) ? $default : "'{$default}'"). ')';
-            }
-            return $null;
+        return $this->column->getNotnull() ? '->nullable(false)' : '->nullable()';
+    }
+
+    /**
+     * default 方法
+     *
+     * @time 2019年10月31日
+     * @return string
+     */
+    protected function default()
+    {
+        if (!$this->isCanSetDefaultValue() && !$this->column->getAutoincrement()) {
+            return "->default({$this->getDefault()})";
         }
 
-        return '->nullable()';
+        return '';
     }
 
     /**
