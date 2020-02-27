@@ -156,18 +156,20 @@ class DocManager
     protected function getDoctrineDriver()
     {
         switch (config('database.default')) {
-            case 'mongo':
-                throw new \Exception('not support mongo database yet');
-            case 'mysql':
-                return new MysqlDriver();
-            case 'oracle':
-                return new OracleDriver();
-            case 'pgsql':
-                return new PgSqlDriver();
-            case 'sqlite':
-                return new  SqliteDriver();
-            case 'sqlsrv':
-                return new SQLSrvDriver();
+          case 'mongo':
+            throw new \Exception('not support [mongo] database yet');
+          case 'mysql':
+            return new MysqlDriver();
+          case 'oracle':
+            return new OracleDriver();
+          case 'pgsql':
+            return new PgSqlDriver();
+          case 'sqlite':
+            return new  SqliteDriver();
+          case 'sqlsrv':
+            return new SQLSrvDriver();
+          default:
+            throw new \Exception('not support [' .config('database.default'). '] database yet');
         }
     }
 
