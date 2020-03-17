@@ -19,11 +19,12 @@ class BlobType extends AbstractType
      */
     protected function getBlobType()
     {
-        return [
+        $types = [
             DbType::LENGTH => 'MysqlAdapter::BLOB_REGULAR',
             DbType::TINY_LENGTH => 'MysqlAdapter::BLOB_TINY',
-            DbType::MEDIUM_LENGTH => 'MysqlAdapter::BLOB_MEDIUM',
             DbType::LONG_LENGTH => 'MysqlAdapter::BLOB_LONG',
-        ][$this->column->getLength()];
+        ];
+
+        return $types[$this->column->getLength()] ?? 'MysqlAdapter::BLOB_MEDIUM';
     }
 }
