@@ -24,12 +24,13 @@ class TextType extends AbstractType
      */
     protected function getTextType()
     {
-        return [
+        $types = [
             DbType::LENGTH => 'MysqlAdapter::TEXT_REGULAR',
             DbType::TINY_LENGTH => 'MysqlAdapter::TEXT_TINY',
-            DbType::MEDIUM_LENGTH => 'MysqlAdapter::TEXT_MEDIUM',
             DbType::LONG_LENGTH => 'MysqlAdapter::TEXT_LONG',
         ][$this->column->getLength()];
+
+        return $types[$this->column->getLength()] ?? 'MysqlAdapter::TEXT_MEDIUM';
     }
 
     /**
@@ -39,11 +40,12 @@ class TextType extends AbstractType
      */
     protected function getTextMethod()
     {
-        return [
+        $methods = [
             DbType::LENGTH => 'text',
             DbType::TINY_LENGTH => 'tinyText',
-            DbType::MEDIUM_LENGTH => 'mediumText',
             DbType::LONG_LENGTH => 'longText',
-        ][$this->column->getLength()];
+        ];
+
+        return $methods[$this->column->getLength()] ?? 'mediumText';
     }
 }
