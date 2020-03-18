@@ -94,7 +94,7 @@ class LaraveMigrationIndexes
             $primary = trim($primary, ',');
             $primary .= ']';
         } else{
-            $primary .= "'{$columns[0]}'";
+			$primary = sprintf("'%s'", reset($columns));
         }
 
 
