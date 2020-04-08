@@ -8,6 +8,7 @@ use Doctrine\DBAL\Driver\PDOPgSql\Driver as PgSqlDriver;
 use Doctrine\DBAL\Driver\PDOOracle\Driver as OracleDriver;
 use Doctrine\DBAL\Driver\PDOSqlite\Driver as SqliteDriver;
 use Doctrine\DBAL\Driver\SQLSrv\Driver as SQLSrvDriver;
+use Doctrine\DBAL\Platforms\MySQL57Platform;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use JaguarJack\MigrateGenerator\Exceptions\EmptyInDatabaseException;
 use JaguarJack\MigrateGenerator\Types\DbType;
@@ -145,6 +146,7 @@ class DocManager
     {
         return new Connection([
             'pdo' => $this->ThinkPHPPdoObject(),
+            'platform' => new MySQL57Platform,
         ], $this->getDoctrineDriver());
     }
 
