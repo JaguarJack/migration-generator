@@ -53,8 +53,8 @@ class ThinkPHPCommand extends Command
         }
 
         foreach ($tables as $key => $table) {
-            file_put_contents( $migrationsPath. $key . date('YmdHis') . '_' . $table->getName(). '.php' , $migrateGenerator->getMigrationContent($table));
-
+            $fileName = Util::mapClassNameToFileName(Str::studly($table->getName()));
+            file_put_contents( $migrationsPath.$fileName,$migrateGenerator->getMigrationContent($table));
             $output->info(sprintf('%s table migration file generated', $table->getName()));
         }
     }
