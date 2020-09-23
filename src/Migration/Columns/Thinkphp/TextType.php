@@ -22,7 +22,7 @@ class TextType extends AbstractType
             DbType::LENGTH => 'MysqlAdapter::TEXT_REGULAR',
             DbType::TINY_LENGTH => 'MysqlAdapter::TEXT_TINY',
             DbType::LONG_LENGTH => 'MysqlAdapter::TEXT_LONG',
-        ][$this->column->getLength()];
+        ];
 
         return $types[$this->column->getLength()] ?? 'MysqlAdapter::TEXT_MEDIUM';
     }
