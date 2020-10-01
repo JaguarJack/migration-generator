@@ -3,8 +3,6 @@
 如果你还未使用或者正想使用数据库迁移功能，但又不并不想自己写迁移文件的话，这个工具可以很好的帮助实现文件迁移，
 目前提供了 Laravel5.5+ 和 Thinkphp6+ 的迁移文件的生成。
 </p>
-### 如何使用
-- composer require jaguarjack/migration-generator:dev-master
 
 ## 平台支持
 #### laravel
@@ -16,6 +14,8 @@ php artisan migration:generate
 ```
 php think migration:generate
 ```
+#### 注意
+> 包中提供的命令如果不能完全满足你的需求，那么你可以根据实际自定义需求。
 
 ### 定义新类型
 
