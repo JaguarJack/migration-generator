@@ -129,7 +129,7 @@ abstract class AbstractMigration
         }
 
         $content .= $this->parseIndexes();
-
+        // $content .= $this->parseForeignKeys();
         return $content;
     }
 

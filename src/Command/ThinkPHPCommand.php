@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace JaguarJack\MigrateGenerator\Command;
 
+use JaguarJack\MigrateGenerator\Migration\LaravelMigrationForeignKeys;
+use JaguarJack\MigrateGenerator\Migration\ThinkphpMigrationForeignKeys;
 use think\console\Command;
 use think\console\Input;
 use think\console\Output;
@@ -39,23 +41,40 @@ class ThinkPHPCommand extends Command
 
     protected function generate(Output $output)
     {
-        $migrateGenerator = (new MigrateGenerator('thinkphp'));
+        try {
+            $migrateGenerator = (new MigrateGenerator('thinkphp'));
 
 
-        $tables = $migrateGenerator->getDatabase()->getAllTables();
+            $tables = $migrateGenerator->getDatabase()->getAllTables();
 
-        $migrationsPath = $this->app->getRootPath() . '/database/migrations/';
+            $migrationsPath = $this->app->getRootPath() . '/database/migrations/';
 
-        if (!is_dir($migrationsPath)) {
-            if (!mkdir($migrationsPath, 0777, true) && !is_dir($migrationsPath)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $migrationsPath));
+            if (!is_dir($migrationsPath)) {
+                if (!mkdir($migrationsPath, 0777, true) && !is_dir($migrationsPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $migrationsPath));
+                }
             }
+
+            foreach ($tables as $key => $table) {
+                file_put_contents($migrationsPath  . ($key + 1) . date('YmdHis') . '_' . $table->getName() . '.php', $migrateGenerator->getMigrationContent($table));
+
+                $output->info(sprintf('%s table migration file generated', $table->getName()));
+            }
+
+            $this->foreignKeys($tables, $migrationsPath);
+        } catch (\Exception $e) {
+            $output->error($e->getMessage());
         }
+    }
 
+    protected function foreignKeys($tables, $migrationsPath)
+    {
         foreach ($tables as $key => $table) {
-            file_put_contents( $migrationsPath. ($key + 1) . date('YmdHis') . '_' . $table->getName(). '.php' , $migrateGenerator->getMigrationContent($table));
-
-            $output->info(sprintf('%s table migration file generated', $table->getName()));
+            $tableForeign = (new ThinkphpMigrationForeignKeys())->setTable($table);
+            if ($tableForeign->hasForeignKeys()) {
+                file_put_contents($migrationsPath . ($key + 1) * 100 . date('YmdHis') . '_' . $table->getName() . '_foreign_keys.php',
+                    $tableForeign->output());
+            }
         }
     }
 }

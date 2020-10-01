@@ -4,6 +4,7 @@ namespace JaguarJack\MigrateGenerator\Command;
 
 use Illuminate\Console\Command;
 use JaguarJack\MigrateGenerator\MigrateGenerator;
+use JaguarJack\MigrateGenerator\Migration\LaravelMigrationForeignKeys;
 
 class LaravelCommand extends Command
 {
@@ -50,6 +51,19 @@ class LaravelCommand extends Command
                 $migrateGenerator->getMigrationContent($table));
 
             $this->info(sprintf('%s table migration file generated', $table->getName()));
+        }
+
+        $this->foreignKeys($tables, database_path( 'migrations/'));
+    }
+
+    protected function foreignKeys($tables, $migrationsPath)
+    {
+        foreach ($tables as $key => $table) {
+            $tableForeign = (new LaravelMigrationForeignKeys())->setTable($table);
+            if ($tableForeign->hasForeignKeys()) {
+                file_put_contents($migrationsPath . date('Y_m_d_His') . '_' . $table->getName() . '_foreign_keys.php',
+                    $tableForeign->output());
+            }
         }
     }
 }

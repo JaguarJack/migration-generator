@@ -52,6 +52,16 @@ class ThinkphpMigrationForeignKeys extends AbstractMigration
     }
 
     /**
+     * 是否有外键
+     *
+     * @return bool
+     */
+    public function hasForeignKeys()
+    {
+        return count($this->_table->getForeignKeys()) ? true : false;
+    }
+
+    /**
      * 获取外键内容
      *
      * @return mixed|string

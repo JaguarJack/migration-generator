@@ -75,7 +75,8 @@ class ThinkphpMigrationIndexs
     {
         $indexes = '';
         foreach ($this->indexes as $index) {
-            if (!$index->isPrimary()) {
+            // options 判断防止 foreign key 导致报错
+            if (!$index->isPrimary() && $index->hasOption('lengths')) {
                 $indexes .= sprintf('->addIndex(%s)', $this->parseIndex($index)) . $this->eof();
             }
         }
