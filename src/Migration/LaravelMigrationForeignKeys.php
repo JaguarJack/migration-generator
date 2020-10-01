@@ -81,7 +81,7 @@ class LaravelMigrationForeignKeys extends AbstractMigration
                            ->onUpdate(\'%s\');'.PHP_EOL,
                 $foreignKeyConstraint->getLocalColumns()[0],
                 $foreignKeyConstraint->getForeignColumns()[0],
-                $foreignKeyConstraint->getLocalTableName(),
+                $foreignKeyConstraint->getForeignTableName(),
                 strtolower($delete ? : 'RESTRICT'), strtolower($update ? : 'RESTRICT')
             );
         }
