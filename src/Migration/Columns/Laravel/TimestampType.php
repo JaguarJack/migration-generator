@@ -9,7 +9,7 @@ class TimestampType extends AbstractType
 
     public function migrateColumn():string
     {
-          return $this->getParsedField($this->isSetCurrentTimestamp() ? 'timestampTz' : 'timestamp');
+        return $this->getParsedField('timestamp');
     }
 
     /**
@@ -34,5 +34,15 @@ class TimestampType extends AbstractType
         }
 
         return $isSet;
+    }
+
+    /**
+     * laravel options
+     *
+     * @return string
+     */
+    protected function options(): string
+    {
+        return ($this->isSetCurrentTimestamp() ? '->useCurrent()' : '') . $this->getComment();
     }
 }
