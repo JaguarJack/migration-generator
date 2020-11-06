@@ -4,6 +4,11 @@
 目前提供了 Laravel5.5+ 和 Thinkphp6+ 的迁移文件的生成。
 </p>
 
+## 安装
+```sh
+composer require jaguarjack/migration-generator:dev-master
+```
+
 ## 平台支持
 #### laravel
 ```shell
