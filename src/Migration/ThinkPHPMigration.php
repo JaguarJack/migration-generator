@@ -3,6 +3,7 @@
 namespace JaguarJack\MigrateGenerator\Migration;
 
 use Doctrine\DBAL\Schema\Index;
+use JaguarJack\MigrateGenerator\Migration\ForeignKeys\ThinkphpMigrationForeignKeys;
 use JaguarJack\MigrateGenerator\Migration\Indexes\ThinkphpMigrationIndexs;
 use JaguarJack\MigrateGenerator\Types\DbType;
 use think\helper\Str;
@@ -73,6 +74,11 @@ class ThinkPHPMigration extends AbstractMigration
     protected function parseIndexes()
     {
         return $this->getIndexParse()->parseIndexes();
+    }
+
+    protected function parseForeignKeys()
+    {
+        return (new ThinkphpMigrationForeignKeys($this->_table))->parseForeignIndexes();
     }
 
     /**

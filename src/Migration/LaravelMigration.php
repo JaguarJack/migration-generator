@@ -5,6 +5,7 @@ namespace JaguarJack\MigrateGenerator\Migration;
 use Doctrine\DBAL\Schema\Index;
 use Illuminate\Support\Str;
 use JaguarJack\MigrateGenerator\Migration\Indexes\LaraveMigrationIndexes;
+use JaguarJack\MigrateGenerator\Migration\ForeignKeys\LaravelMigrationForeignKeys;
 
 class LaravelMigration extends AbstractMigration
 {
@@ -79,5 +80,10 @@ class LaravelMigration extends AbstractMigration
     protected function parseIndexes(): string
     {
        return str_replace($this->headString(), $this->head(), (new LaraveMigrationIndexes($this->_table))->parseIndexes());
+    }
+
+    protected function parseForeignKeys()
+    {
+        return (new LaravelMigrationForeignKeys($this->_table))->parseForeignIndexes();
     }
 }

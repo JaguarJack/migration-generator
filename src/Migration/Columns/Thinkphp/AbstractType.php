@@ -7,7 +7,7 @@ use JaguarJack\MigrateGenerator\Migration\Columns\AbstractType as Type;
 abstract class AbstractType extends Type
 {
     /**
-     * Laravel frame temp
+     * thinkphp frame temp
      *
      * @param $type
      * @param $options
@@ -45,16 +45,31 @@ abstract class AbstractType extends Type
         return '[' . $options . $this->getNull() . $this->getSigned() . $this->getComment() . ']';
     }
 
+    /**
+     * comment
+     *
+     * @return string
+     */
     protected function getComment()
     {
         return sprintf("'comment' => '%s',", $this->column->getComment());
     }
 
+    /**
+     * get signed
+     *
+     * @return string
+     */
     protected function getSigned()
     {
-        return sprintf("'signed' => %s,", $this->column->getUnsigned() ? 'true' : 'false');
+        return sprintf("'signed' => %s,", !$this->column->getUnsigned() ? 'true' : 'false');
     }
 
+    /**
+     * get null
+     *
+     * @return string
+     */
     protected function getNull()
     {
         if ($this->column->getNotnull()) {
@@ -68,6 +83,5 @@ abstract class AbstractType extends Type
         }
 
         return  "'null' => true,";
-
     }
 }
