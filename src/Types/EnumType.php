@@ -39,12 +39,10 @@ class EnumType extends DoctrineType
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        dd(123);
         if (null === $value) {
             return null;
         }
 
-        dd(123);
         if ($value instanceof DateTime) {
             return $value->getTimestamp();
         }
@@ -52,7 +50,7 @@ class EnumType extends DoctrineType
         throw ConversionException::conversionFailedInvalidType(
             $value,
             $this->getName(),
-            ['null', 'DateTime']
+            ['null', 'enum']
         );
     }
 
@@ -61,7 +59,6 @@ class EnumType extends DoctrineType
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        dd($value);
         if (null === $value) {
             return null;
         }
